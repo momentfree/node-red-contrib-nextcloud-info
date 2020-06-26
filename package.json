@@ -7,7 +7,7 @@
 		"cloud",
 		"nextcloud",
 		"monitor",
-		"administrators"
+		"administrator"
 	],
 	"license": "Apache-2.0",
 	"main": "nextcloud-info.js",
