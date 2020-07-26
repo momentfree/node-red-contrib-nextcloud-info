@@ -52,13 +52,6 @@ module.exports = function(RED) {
         // username and password fields use CREDENTIALS type
         var password = node.credentials.password;
         var username = node.credentials.username;
-/*         if(node.selfsignedcerts){
-          // enable ssl self-signet certs
-          process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-        } else {
-          // disable ssl self-signet certs
-          process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 1;
-        } */
         node.on('input', function(msg) {
           if (msg.ncproperty) {
             this.outproperty = msg.ncproperty;
