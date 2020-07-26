@@ -10,9 +10,9 @@ module.exports = function(RED) {
             headers : {
                 "Authorization" : node.auth
             },
-			agentOptions: {
-				rejectUnauthorized: !node.selfsignedcerts
-			}			
+            agentOptions: {
+		rejectUnauthorized: !node.selfsignedcerts
+            }			
         },
         function (error, response, data) {
           if (error) {
