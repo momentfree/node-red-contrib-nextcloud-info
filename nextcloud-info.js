@@ -10,13 +10,12 @@ module.exports = function(RED) {
             headers : {
                 "Authorization" : node.auth
             },
-            agentOptions: {
-		rejectUnauthorized: !node.selfsignedcerts
-            }			
+			agentOptions: {
+				rejectUnauthorized: !node.selfsignedcerts
+			}			
         },
         function (error, response, data) {
           if (error) {
-            node.status({fill:"red",shape:"dot",text:"connection error"});
             callback(error);
             return;
           }
@@ -24,20 +23,16 @@ module.exports = function(RED) {
             node.jsonNCDataResponse = JSON.parse(data);
 
             if(node.jsonNCDataResponse.ocs.meta.statuscode!==200){
-              node.status({fill:"red",shape:"dot",text:"connection error"});
               callback(node.jsonNCDataResponse.ocs.meta.message);
               return;
             } else {
               // Request Successfull. Output data property
               node.jsonNCDataResponse = node.jsonNCDataResponse.ocs.data;
               callback();
-              // reset status
-              node.status({});
             }
           } catch (e) {
-            node.status({fill:"red",shape:"dot",text:"generic error"});
-            callback(e);
-            return;
+			 callback(e);
+			 return;
           }
         });
     }
@@ -62,12 +57,17 @@ module.exports = function(RED) {
             delete msg.ncurl;
           }
           // validate url
+          if (!(/^[a-zA-Z0-9-_]+$/).test(node.outproperty)){
+            // did not pass property validation then reset property 
+            node.outproperty="payload";
+            node.error("Warning ncproperty: missing or incorrect parameter, payload will be used as output property",msg);
+          }
           if (!(/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(node.url)){
             // did not pass url validation then reset url var
             node.url="";
-            node.error("ncurl: missing or incorrect parameter",msg);
-          }
-          if (node.credentials && node.credentials.hasOwnProperty("password") && node.credentials.hasOwnProperty("username") && node.url) {
+            node.error("Error ncurl: missing or incorrect parameter",msg);
+          }		  
+          if (node.credentials && node.credentials.hasOwnProperty("password") && node.credentials.hasOwnProperty("username") && node.url && node.outproperty) {
             // use basic authentication
             node.auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
             // force JSON format output request
@@ -77,14 +77,18 @@ module.exports = function(RED) {
             // async request with callback
             requestInfoNC(node,msg,function(err) {
                     if (err) {
-                        node.error(err,msg);
+						node.status({fill:"red",shape:"dot",text:"connection error"});
+						node.error(err,msg);
                     } else {
-                      // Request Successfull. Output data property
-                      RED.util.setMessageProperty(msg,node.outproperty,node.jsonNCDataResponse);
-                      node.send(msg);
+						// Request Successfull. Output data property
+						RED.util.setMessageProperty(msg,node.outproperty,node.jsonNCDataResponse);
+						node.send(msg);
+						// reset node status
+						node.status({});					  
                     }
             });
           } else {
+            node.status({fill:"red",shape:"dot",text:"connection error"});
             node.error("Error mandatory fields: url, username, password, property",msg);
           }
         });
