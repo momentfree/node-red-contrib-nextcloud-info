@@ -5,7 +5,7 @@
         defaults: {
             name: {value:""},
             url: {value:""},
-            outproperty: {value:"payload"},
+            outproperty: {value:"payload", validate:RED.validators.regex(/^[a-zA-Z0-9-_]+$/)},
             selfsignedcerts:{value:false}
         },
         credentials: {
@@ -23,12 +23,12 @@
           if (!this.outproperty) {
               $("#node-input-outproperty").val("payload");
           }
+		  $("#node-input-selfsignedcerts").click(function() {
+			$("#node-input-username").val("");
+			$("#node-input-password").val("");		  
+		  }.bind(this));
         },
         oneditsave: function() {
-          $("#node-input-outproperty").typedInput({
-            default:'msg',
-            types:['msg']
-          });
         },
         paletteLabel: function() {
             return "nextcloud-info";
@@ -43,6 +43,10 @@
         <input type="text" id="node-input-url" placeholder="https://nextcloud-example.com/ocs/v2.php/apps/serverinfo/api/v1/info">
     </div>
     <div class="form-row">
+        <input type="checkbox" id="node-input-selfsignedcerts" style="vertical-align:top; width:auto;">
+        <label for="node-input-selfsignedcerts" style="width:auto;">Trust Self Signed Certificate (on change resets user & password)</label>
+    </div>		
+    <div class="form-row">
         <label for="node-input-username"><i class="fa fa-user"></i> Username</label>
         <input type="password" id="node-input-username" >
     </div>
@@ -53,10 +57,6 @@
     <div class="form-row">
         <label for="node-input-outproperty"><i class="fa fa-ellipsis-h"></i> Output to</span></label>
         <input type="text" id="node-input-outproperty"/>
-    </div>
-    <div class="form-row">
-        <input type="checkbox" id="node-input-selfsignedcerts" style="margin-left:10px; vertical-align:top; width:auto;">
-        <label for="node-input-selfsignedcerts" style="width:auto;">Trust Self Signed Certificate (not safe)</label>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -71,7 +71,7 @@
   	<dt><i>ncurl</i> <span class="property-type">url-string</span></dt>
   	<dd>Nextcloud external monitoring tool endpoint URL of your nextcloud instance. <code>ncurl</code> input value must be a complete http/https address url - e.g. <pre>https://nextcloud.example.com/ocs/v2.php/apps/serverinfo/api/v1/info</pre> <b>This node accepts Self Signed Certs also, use at your own risk</b>. The input is used instead of editor panel field's value when specified.</dd>
   	<dt><i>ncproperty</i> <span class="property-type">string</span></dt>
-  	<dd>Name of property containing object info result. <code>ncproperty</code> input value must be a valid msg property name. The input is used instead of editor panel field's value when specified. Default property output name is <pre>payload</pre></dd>
+  	<dd>Name of property containing object info result. <code>ncproperty</code> input value must be a valid msg property name: only one alphanumeric word with dash and/or underscore. On validation failure default name property will be used. Valid input is used instead of editor panel field's value when specified. Default name property is <pre>payload</pre></dd>
   </dl>
   <h3>Output</h3>
   <dl class="message-properties">
