@@ -23,7 +23,7 @@ module.exports = function(RED) {
 			try {
 			node.jsonNCDataResponse = JSON.parse(data);
 
-			if(node.jsonNCDataResponse.ocs.meta.statuscode!==200 && node.jsonNCDataResponse.ocs.meta.statuscode!==100){
+			if(node.jsonNCDataResponse.ocs.meta.statuscode<>200 && node.jsonNCDataResponse.ocs.meta.statuscode<>100){
 				callback(node.jsonNCDataResponse.ocs.meta.message);
 				return;
 			} else {
