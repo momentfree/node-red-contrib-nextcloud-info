@@ -5,7 +5,7 @@
         defaults: {
             name: {value:""},
             url: {value:""},
-            outproperty: {value:"payload", validate:RED.validators.regex(/(^[a-zA-Z0-9-_]+$|^$)/)},
+            outproperty: {value:"", validate:RED.validators.regex(/(^[a-zA-Z0-9-_]+$|^$)/)},
             selfsignedcerts:{value:false}
         },
         credentials: {
