@@ -5,7 +5,7 @@
         defaults: {
             name: {value:""},
             url: {value:""},
-            outproperty: {value:"payload", validate:RED.validators.regex(/^[a-zA-Z0-9-_]+$/)},
+            outproperty: {value:"payload", validate:RED.validators.regex(/(^[a-zA-Z0-9-_]+$|^$)/)},
             selfsignedcerts:{value:false}
         },
         credentials: {
@@ -20,13 +20,10 @@
             return this.name||"nextcloud-info";
         },
         oneditprepare: function() {
-          if (!this.outproperty) {
-              $("#node-input-outproperty").val("payload");
-          }
-		  $("#node-input-selfsignedcerts").click(function() {
-			$("#node-input-username").val("");
-			$("#node-input-password").val("");		  
-		  }.bind(this));
+          $("#node-input-selfsignedcerts").click(function() {
+              $("#node-input-username").val("");
+              $("#node-input-password").val("");
+          }.bind(this));
         },
         oneditsave: function() {
         },
@@ -56,7 +53,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-outproperty"><i class="fa fa-ellipsis-h"></i> Output to</span></label>
-        <input type="text" id="node-input-outproperty"/>
+        <input type="text" id="node-input-outproperty" placeholder="payload">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -69,7 +66,7 @@
   <h3>Input</h3>
   <dl class="message-properties">
   	<dt><i>ncurl</i> <span class="property-type">url-string</span></dt>
-  	<dd>Nextcloud external monitoring tool endpoint URL of your nextcloud instance. <code>ncurl</code> input value must be a complete http/https address url - e.g. <pre>https://nextcloud.example.com/ocs/v2.php/apps/serverinfo/api/v1/info</pre> <b>This node accepts Self Signed Certs also, use at your own risk</b>. The input is used instead of editor panel field's value when specified.</dd>
+  	<dd>Nextcloud external monitoring tool endpoint URL of your nextcloud instance. <code>ncurl</code> input value must be a complete http/https address url <br>e.g. <pre>https://nextcloud.example.com/ocs/v2.php/apps/serverinfo/api/v1/info</pre> <b>This node accepts Self Signed Certs also, use at your own risk</b>. The input is used instead of editor panel field's value when specified.<br> <b>Other Nextcloud Endpoint: </b>in addition to monitor api path url (/ocs/v2.php/apps/serverinfo/api/v1/info) you can use other nextcloud endpoint url to get information on users, notifications (notification app must be installed and active on nextcloud instance), capabilities.<br> to get <a href="https://docs.nextcloud.com/server/latest/developer_manual/client_apis/OCS/ocs-api-overview.html#user-metadata-list-user-ids" target="_new">USER-ID list</a>: <b>/ocs/v1.php/cloud/users</b><br>e.g.<pre>https://nextcloud.example.com/ocs/v1.php/cloud/users</pre>to get info on <a href="https://docs.nextcloud.com/server/latest/developer_manual/client_apis/OCS/ocs-api-overview.html#user-metadata" target="_new">specific user</a>: <b>/ocs/v1.php/cloud/users/[USER-ID]</b><br>e.g.<pre>https://nextcloud.example.com/ocs/v1.php/cloud/users/smith</pre>to get server <a href="https://docs.nextcloud.com/server/latest/developer_manual/client_apis/OCS/ocs-api-overview.html#capabilities-api" target="_new">capabilities</a>: <b>/ocs/v1.php/cloud/capabilities</b><br>e.g.<pre>https://nextcloud.example.com/ocs/v1.php/cloud/capabilities</pre> in addition <a href="https://docs.nextcloud.com/server/latest/developer_manual/core/externalapi.html" target="_new">External App API</a> are available. If notifications app is installed and activated on nextcloud instance every standard user and admin can query the <a href="https://docs.nextcloud.com/server/latest/developer_manual/client_apis/OCS/ocs-api-overview.html#notifications" target="_new">external notifications API</a>: <b>/ocs/v2.php/apps/notifications/api/v2/notifications</b><br>e.g.<pre>https://nextcloud.example.com/ocs/v2.php/apps/notifications/api/v2/notifications</pre></dd>
   	<dt><i>ncproperty</i> <span class="property-type">string</span></dt>
   	<dd>Name of property containing object info result. <code>ncproperty</code> input value must be a valid msg property name: only one alphanumeric word with dash and/or underscore. On validation failure default name property will be used. Valid input is used instead of editor panel field's value when specified. Default name property is <pre>payload</pre></dd>
   </dl>
