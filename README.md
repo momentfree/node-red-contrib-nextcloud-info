@@ -12,4 +12,4 @@ This node is for Nextcloud Administrators. To get your external monitor URL from
 ## News
 Other Nextcloud EndPoint url are now available to get information about users, capabilities and more.
 
-Tested only on Nextcloud 18, should work on version 15 or greater
+Tested only on Nextcloud 18, should work on version 15 or greater.
