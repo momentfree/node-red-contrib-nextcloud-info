@@ -1,6 +1,6 @@
 {
 	"name": "node-red-contrib-nextcloud-info",
-	"version": "0.5.1",
+	"version": "0.5.5",
 	"description": "Nextcloud monitor node-red node for Nextcloud Administrators only",
 	"keywords": [
 		"node-red",
