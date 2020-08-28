@@ -73,7 +73,7 @@ module.exports = function(RED) {
 				// use basic authentication
 				node.auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 				// force JSON format on SERVERINFO API
-				if (node.url.indexOf("?format=json") == -1){
+				if (!(/\?format=json$/).test(node.url)){
 					node.url=node.url + "?format=json";
 				}
 				// async request with callback
@@ -103,3 +103,4 @@ module.exports = function(RED) {
 	 }
 	});
 }
+
