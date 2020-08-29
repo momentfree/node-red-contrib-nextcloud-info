@@ -1,0 +1,30 @@
+{
+    "nodeNCinfo" : {
+		"html" : {
+			"label" : {
+				"url": "Indirizzo",
+				"selsignedcerts": "Accetta certificati SSL inaffidabili (la modifica annulla i campi utente e password)",
+				"username": "Utente",
+				"password": "Password",
+				"outproperty": "Risultato",
+				"nodename": "Nome"				
+			},
+			"placeholder" : {
+				"url": "https://nextcloud-example.com/ocs/v2.php/apps/serverinfo/api/v1/info",
+				"outproperty": "payload",
+				"nodename": "nome del nodo"
+			}			
+		},
+		"runtime" : {
+			"status" : {
+				"connecting": "Connessione...",
+				"error": "errore di connessione"
+			},
+			"nodeerror" : {
+				"mandatory": "Errore campi obbligatori: indirizzo, utente, password, risultato",
+				"ncurl": "Errore ncurl/indirizzo: parametro mancante o sbagliato",
+				"ncproperty": "Attenzione ncproperty/risultato: il campo è sbagliato o mancante quindi verrà utilizzata la proprietà payload come risultato dell'elaborazione del nodo"
+			}			
+		}		
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "nodeNCinfo" : {
+		"html" : {
+			"label" : {
+				"url": "Endpoint Url",
+				"selsignedcerts": "Trust Self Signed Certificate (on change resets user & password)",
+				"username": "Username",
+				"password": "Password",
+				"outproperty": "Output to",
+				"nodename": "Name"				
+			},
+			"placeholder" : {
+				"url": "https://nextcloud-example.com/ocs/v2.php/apps/serverinfo/api/v1/info",
+				"outproperty": "payload",
+				"nodename": "node name"
+			}			
+		},
+		"runtime" : {
+			"status" : {
+				"connecting": "Connecting...",
+				"error": "connection error"
+			},
+			"nodeerror" : {
+				"mandatory": "Error mandatory fields: url, username, password, property",
+				"ncurl": "Error ncurl: missing or incorrect parameter",
+				"ncproperty": "Warning ncproperty: missing or incorrect parameter, payload will be used as output property"
+			}			
+		}		
+    }
+}
