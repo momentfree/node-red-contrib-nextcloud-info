@@ -3,7 +3,7 @@ module.exports = function(RED) {
 	var request = require("request");
 
 	function requestInfoNC(node,msg,callback){
-		node.status({fill:"blue",shape:"dot",text:"connecting.."});
+		node.status({fill:"blue",shape:"dot",text:"nodeNCinfo.runtime.status.connecting"});
 		request.get(
 		{
 			url : node.url,
@@ -21,16 +21,16 @@ module.exports = function(RED) {
 				return;
 			}
 			try {
-			node.jsonNCDataResponse = JSON.parse(data);
+				node.jsonNCDataResponse = JSON.parse(data);
 
-			if(node.jsonNCDataResponse.ocs.meta.statuscode !== 200 && node.jsonNCDataResponse.ocs.meta.statuscode !== 100){
-				callback(node.jsonNCDataResponse.ocs.meta.message);
-				return;
-			} else {
-				// Request Successfull. Output data property
-				node.jsonNCDataResponse = node.jsonNCDataResponse.ocs.data;
-				callback();
-			}
+				if(node.jsonNCDataResponse.ocs.meta.statuscode !== 200 && node.jsonNCDataResponse.ocs.meta.statuscode !== 100){
+					callback(node.jsonNCDataResponse.ocs.meta.message);
+					return;
+				} else {
+					// Request Successfull. Output data property
+					node.jsonNCDataResponse = node.jsonNCDataResponse.ocs.data;
+					callback();
+				}
 			} catch (e) {
 				callback(e);
 				return;
@@ -61,13 +61,13 @@ module.exports = function(RED) {
 			if (!(/^[a-zA-Z0-9-_]+$/).test(node.outproperty)){
 				// did not pass property validation then reset property name to payload
 				node.outproperty="payload";
-				node.error("Warning ncproperty: missing or incorrect parameter, payload will be used as output property",msg);
+				node.error(RED._("nodeNCinfo.runtime.nodeerror.ncproperty"),msg);
 			}
 			// validate url
 			if (!(/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(node.url)){
 				// did not pass url validation then reset url var
 				node.url="";
-				node.error("Error ncurl: missing or incorrect parameter",msg);
+				node.error(RED._("nodeNCinfo.runtime.nodeerror.ncurl"),msg);
 			}
 			if (node.credentials && node.credentials.hasOwnProperty("password") && node.credentials.hasOwnProperty("username") && node.url && node.outproperty){
 				// use basic authentication
@@ -79,7 +79,7 @@ module.exports = function(RED) {
 				// async request with callback
 				requestInfoNC(node,msg,function(err) {
 						if (err) {
-							node.status({fill:"red",shape:"dot",text:"connection error"});
+							node.status({fill:"red",shape:"dot",text:"nodeNCinfo.runtime.status.error"});
 							node.error(err,msg);
 						} else {
 							// Request Successfull. Output data property
@@ -90,8 +90,8 @@ module.exports = function(RED) {
 						}
 				});
 			} else {
-				node.status({fill:"red",shape:"dot",text:"connection error"});
-				node.error("Error mandatory fields: url, username, password, property",msg);
+				node.status({fill:"red",shape:"dot",text:"nodeNCinfo.runtime.status.error"});
+				node.error(RED._("nodeNCinfo.runtime.nodeerror.mandatory"),msg);
 			}
 		});
 	}
@@ -103,4 +103,3 @@ module.exports = function(RED) {
 	 }
 	});
 }
-
